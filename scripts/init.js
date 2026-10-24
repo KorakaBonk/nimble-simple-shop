@@ -3451,7 +3451,7 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(DocumentSheetV2)
   constructor(journalEntryOrOptions, options = {}, actorId) {
     const entry = journalEntryOrOptions instanceof JournalEntry ? journalEntryOrOptions : journalEntryOrOptions?.document instanceof JournalEntry ? journalEntryOrOptions.document : null;
     const appOptions = journalEntryOrOptions instanceof JournalEntry ? options : journalEntryOrOptions ?? {};
-    const sheetOptions = foundry.utils.mergeObject(foundry.utils.deepClone(appOptions), { document: entry ?? void 0 });
+    const sheetOptions = { ...appOptions, document: entry ?? void 0 };
     super(sheetOptions);
     if (!entry) throw new Error(`${SHOP_MODULE_ID} | ShopApp requires a JournalEntry.`);
     this.journalEntry = entry;

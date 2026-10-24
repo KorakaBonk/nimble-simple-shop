@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+- Fix the shop journal sheet failing to open in Foundry v14 ("Cannot assign to read only property 'pages'"). The sheet no longer deep-merges the journal entry into its options.
+
 ## 1.0.0
 - First stable release of Nimble Simple Shop for Foundry VTT v14 and Nimble 0.10.0. No functional changes since 0.2.1.
 
