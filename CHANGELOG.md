@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0
+- First stable release of Nimble Simple Shop for Foundry VTT v14 and Nimble 0.10.0. No functional changes since 0.2.1.
+
 ## 0.2.1
 - Version bump and re-release. No functional changes since 0.2.0.
 
