@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.2.1
+- Version bump and re-release. No functional changes since 0.2.0.
+
 ## 0.2.0
 - Forked from [KennyMakes/Nimble-Shop](https://github.com/KennyMakes/Nimble-Shop) as **Nimble Simple Shop** (module id `nimble-simple-shop`).
 - Targets Foundry VTT v14 (verified 14.365) and the Nimble system 0.10.0.
