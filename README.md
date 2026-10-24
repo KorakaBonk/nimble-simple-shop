@@ -1,14 +1,16 @@
-# Nimble Shop
+# Nimble Simple Shop
 
-A journal-backed storefront module for the **Nimble** system in **Foundry Virtual Tabletop v13**.
+A journal-backed storefront module for the **Nimble** system in **Foundry Virtual Tabletop v14**.
+
+> This is a fork of [Nimble Shop by KennyMakes](https://github.com/KennyMakes/Nimble-Shop), updated for Foundry v14 and Nimble 0.10.0. All credit for the original module goes to KennyMakes. It is released under the same MIT license.
 <img width="979" height="763" alt="Standard Shop View" src="https://github.com/user-attachments/assets/5adee26d-25a2-4c4f-8260-8ac21594896b" />
-Nimble Shop turns a journal entry into a working in-game shop with GM-managed stock, player buying and selling, hidden inventory, custom orders, presets, and optional till-based economy controls.
+Nimble Simple Shop turns a journal entry into a working in-game shop with GM-managed stock, player buying and selling, hidden inventory, custom orders, presets, and optional till-based economy controls.
 
 ---
 
 ## What it does
 
-Nimble Shop gives GMs a reusable storefront workflow inside Foundry:
+Nimble Simple Shop gives GMs a reusable storefront workflow inside Foundry:
 
 - build a shop from a journal entry
 - manage visible and hidden inventory
@@ -39,8 +41,8 @@ Nimble Shop gives GMs a reusable storefront workflow inside Foundry:
 
 ## Requirements
 
-- **Foundry Virtual Tabletop v13**
-- **Nimble system 0.7.0 or newer**
+- **Foundry Virtual Tabletop v14** (verified on 14.365)
+- **Nimble system 0.10.0 or newer**
 - **At least one active GM connected** for player-side transactions
 
 ---
@@ -51,20 +53,23 @@ Nimble Shop gives GMs a reusable storefront workflow inside Foundry:
 Use this URL in Foundry's **Install Module** dialog:
 
 ```text
-https://github.com/KennyMakes/Nimble-Shop/releases/latest/download/module.json
+https://github.com/KorakaBonk/nimble-simple-shop/releases/latest/download/module.json
 ```
 
 ### Manual installation
-1. Download `nimble-shop.zip` from the latest GitHub release.
-2. Extract it into your Foundry `Data/modules/` directory.
-3. Enable **Nimble Shop** in your world.
+1. Download `module.zip` from the latest GitHub release.
+2. Extract it into your Foundry `Data/modules/nimble-simple-shop/` directory.
+3. Enable **Nimble Simple Shop** in your world.
+
+### Coming from the original Nimble Shop
+This fork uses its own module id (`nimble-simple-shop`), so it installs alongside the original rather than replacing it. Shops created with the original module are read automatically and saved under the new module the next time they change. World settings and saved presets are not carried over. Don't enable both modules in the same world, since they register competing journal sheets.
 
 ---
 
 ## Quick start
 
 1. Create or choose a journal entry that will act as the shop.
-2. Change that journal entry to use the **Nimble Shop** sheet.
+2. Change that journal entry to use the **Nimble Simple Shop** sheet.
 3. Open the shop as the GM.
 4. Click **GM Editor**.
 5. Fill in merchant and shop settings.
@@ -80,7 +85,7 @@ https://github.com/KennyMakes/Nimble-Shop/releases/latest/download/module.json
 Create a journal entry that will represent the storefront.
 
 ### 2. Assign the shop sheet
-Change the journal entry to use the **Nimble Shop** sheet.
+Change the journal entry to use the **Nimble Simple Shop** sheet.
 
 ### 3. Open the GM editor
 Inside the shop page, click **GM Editor**.
@@ -157,7 +162,8 @@ This is optional and can be left off for a simpler storefront experience.
 
 - Shop data is stored on the journal entry.
 - Player transactions may be routed through a GM relay when direct writes are not available to the player.
-- This release is focused on Nimble storefront workflows inside Foundry v13.
+- This release is focused on Nimble storefront workflows inside Foundry v14.
+- Copper coins on characters are not counted toward shop funds; prices are handled in gold and silver.
 
 ---
 
@@ -191,3 +197,7 @@ npm run build:check
 
 This rebuilds and fails if `scripts/init.js` is out of date.
 
+
+### Releasing
+
+Bump `version` in `module.json`, add a matching `## x.y.z` section to `CHANGELOG.md`, then push a tag such as `v0.2.0`. The release workflow builds `module.zip` and attaches it and `module.json` to the GitHub release, which is what the manifest URL points at.

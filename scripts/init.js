@@ -1,5 +1,6 @@
 // scripts/shop/constants.ts
-var SHOP_MODULE_ID = "nimble-shop";
+var SHOP_MODULE_ID = "nimble-simple-shop";
+var SHOP_LEGACY_MODULE_ID = "nimble-shop";
 var SHOP_FLAG_KEY = "shop";
 var SHOP_FLAG_PATH = `flags.${SHOP_MODULE_ID}.${SHOP_FLAG_KEY}`;
 var SHOP_SCHEMA_VERSION = 1;
@@ -827,7 +828,7 @@ function getPresetButtonMarkup() {
   </div>`;
 }
 function getShopData(journalEntry) {
-  const raw = journalEntry.getFlag(SHOP_MODULE_ID, SHOP_FLAG_KEY);
+  const raw = journalEntry.getFlag(SHOP_MODULE_ID, SHOP_FLAG_KEY) ?? journalEntry.flags?.[SHOP_LEGACY_MODULE_ID]?.[SHOP_FLAG_KEY];
   if (!raw || typeof raw !== "object") return null;
   return ensureShopDefaults(raw);
 }
@@ -1178,7 +1179,7 @@ function priceDataToSp(price) {
   const denomination = String(price?.denomination ?? foundry.utils.getProperty(price, "denomination") ?? "sp").toLowerCase();
   const rawValue = Number(price?.value ?? foundry.utils.getProperty(price, "value") ?? 0);
   const normalizedValue = Number.isFinite(rawValue) ? Math.max(0, Math.floor(rawValue)) : 0;
-  return denomination === "gp" ? normalizedValue * 10 : normalizedValue;
+  return denomination === "gp" ? normalizedValue * 10 : denomination === "cp" ? Math.ceil(normalizedValue / 10) : normalizedValue;
 }
 async function resolveShopSourceItem(sourceUuid) {
   if (!sourceUuid) return null;
@@ -1523,7 +1524,7 @@ var ShopGmEditor = class _ShopGmEditor extends foundry.applications.api.Handleba
       contentClasses: ["standard-form", "nimble-shop-gm-editor-window"]
     }
   });
-  static PARTS = { main: { root: true, template: "modules/nimble-shop/templates/shop-gm-editor.hbs" } };
+  static PARTS = { main: { root: true, template: `modules/${SHOP_MODULE_ID}/templates/shop-gm-editor.hbs` } };
   journalEntry;
   shopData;
   editorTab = "details";
@@ -2385,8 +2386,6 @@ var ShopGmEditor = class _ShopGmEditor extends foundry.applications.api.Handleba
       if (choice === "discard") { this.isDirty = false; return super.close(options); }
       return this;
     }
-    const fallback = await Dialog.confirm({ title: "Unsaved Changes", content });
-    if (!fallback) return this;
     this.isDirty = false;
     return super.close(options);
   }
@@ -2979,7 +2978,7 @@ function createResaleEntryFromItem(item, quantity) {
   const denomination = String(price?.denomination ?? "sp").toLowerCase();
   const rawValue = Number(price?.value ?? 0);
   const normalizedValue = Number.isFinite(rawValue) ? Math.max(0, Math.floor(rawValue)) : 0;
-  const baseValueSp = denomination === "gp" ? normalizedValue * 10 : normalizedValue;
+  const baseValueSp = denomination === "gp" ? normalizedValue * 10 : denomination === "cp" ? Math.ceil(normalizedValue / 10) : normalizedValue;
   return {
     id: randomId2("stock"),
     sourceUuid: item.getFlag("core", "sourceId") ?? null,
@@ -3429,10 +3428,9 @@ function getStockBadgeMarkup(entry) {
   }
   return badges.join("");
 }
-const { HandlebarsApplicationMixin } = foundry.applications.api;
-var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(foundry.applications.sheets.journal.JournalEntrySheet) {
+const { HandlebarsApplicationMixin, DocumentSheetV2 } = foundry.applications.api;
+var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(DocumentSheetV2) {
   static DEFAULT_OPTIONS = foundry.utils.mergeObject(foundry.utils.deepClone(super.DEFAULT_OPTIONS), {
-    id: "nimble-shop-entry-sheet",
     tag: "section",
     classes: ["nimble-shop-entry-sheet-app"],
     position: { width: 980, height: 760 },
@@ -3441,7 +3439,7 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(foundry.applicat
   static PARTS = {
     main: {
       root: true,
-      template: "modules/nimble-shop/templates/shop-entry-sheet.hbs"
+      template: `modules/${SHOP_MODULE_ID}/templates/shop-entry-sheet.hbs`
     }
   };
   journalEntry;
@@ -3777,6 +3775,8 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(foundry.applicat
       this._searchFocus = false;
     }
   }
+  _toggleDisabled(_disabled) {
+  }
   bindUi(root) {
     root.onclick = async (event) => {
       const target = event.target;
@@ -3947,7 +3947,9 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(foundry.applicat
     await this.render(true);
   }
   static async openForEntry(journalEntry, actorId) {
-    const app = new _ShopApp(journalEntry, {}, actorId);
+    const existing = Object.values(journalEntry.apps ?? {}).find((app2) => app2 instanceof _ShopApp) ?? null;
+    const app = existing ?? new _ShopApp(journalEntry, {}, actorId);
+    if (existing && actorId) existing.state.selectedActorId = actorId;
     await app.render(true);
     return app;
   }
@@ -4368,7 +4370,7 @@ function registerShopSheet() {
     return;
   }
   cfg.registerSheet(JournalEntry, SHOP_MODULE_ID, ShopApp, {
-    label: "Nimble Shop",
+    label: "Nimble Simple Shop",
     makeDefault: false
   });
 }

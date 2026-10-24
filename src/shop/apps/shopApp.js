@@ -192,10 +192,9 @@ function getStockBadgeMarkup(entry) {
   }
   return badges.join("");
 }
-const { HandlebarsApplicationMixin } = foundry.applications.api;
-var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(foundry.applications.sheets.journal.JournalEntrySheet) {
+const { HandlebarsApplicationMixin, DocumentSheetV2 } = foundry.applications.api;
+var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(DocumentSheetV2) {
   static DEFAULT_OPTIONS = foundry.utils.mergeObject(foundry.utils.deepClone(super.DEFAULT_OPTIONS), {
-    id: "nimble-shop-entry-sheet",
     tag: "section",
     classes: ["nimble-shop-entry-sheet-app"],
     position: { width: 980, height: 760 },
@@ -204,7 +203,7 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(foundry.applicat
   static PARTS = {
     main: {
       root: true,
-      template: "modules/nimble-shop/templates/shop-entry-sheet.hbs"
+      template: `modules/${SHOP_MODULE_ID}/templates/shop-entry-sheet.hbs`
     }
   };
   journalEntry;
@@ -540,6 +539,8 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(foundry.applicat
       this._searchFocus = false;
     }
   }
+  _toggleDisabled(_disabled) {
+  }
   bindUi(root) {
     root.onclick = async (event) => {
       const target = event.target;
@@ -710,7 +711,9 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(foundry.applicat
     await this.render(true);
   }
   static async openForEntry(journalEntry, actorId) {
-    const app = new _ShopApp(journalEntry, {}, actorId);
+    const existing = Object.values(journalEntry.apps ?? {}).find((app2) => app2 instanceof _ShopApp) ?? null;
+    const app = existing ?? new _ShopApp(journalEntry, {}, actorId);
+    if (existing && actorId) existing.state.selectedActorId = actorId;
     await app.render(true);
     return app;
   }

@@ -13,7 +13,7 @@ function registerShopSheet() {
     return;
   }
   cfg.registerSheet(JournalEntry, SHOP_MODULE_ID, ShopApp, {
-    label: "Nimble Shop",
+    label: "Nimble Simple Shop",
     makeDefault: false
   });
 }

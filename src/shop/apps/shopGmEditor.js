@@ -124,7 +124,7 @@ function priceDataToSp(price) {
   const denomination = String(price?.denomination ?? foundry.utils.getProperty(price, "denomination") ?? "sp").toLowerCase();
   const rawValue = Number(price?.value ?? foundry.utils.getProperty(price, "value") ?? 0);
   const normalizedValue = Number.isFinite(rawValue) ? Math.max(0, Math.floor(rawValue)) : 0;
-  return denomination === "gp" ? normalizedValue * 10 : normalizedValue;
+  return denomination === "gp" ? normalizedValue * 10 : denomination === "cp" ? Math.ceil(normalizedValue / 10) : normalizedValue;
 }
 async function resolveShopSourceItem(sourceUuid) {
   if (!sourceUuid) return null;
@@ -469,7 +469,7 @@ var ShopGmEditor = class _ShopGmEditor extends foundry.applications.api.Handleba
       contentClasses: ["standard-form", "nimble-shop-gm-editor-window"]
     }
   });
-  static PARTS = { main: { root: true, template: "modules/nimble-shop/templates/shop-gm-editor.hbs" } };
+  static PARTS = { main: { root: true, template: `modules/${SHOP_MODULE_ID}/templates/shop-gm-editor.hbs` } };
   journalEntry;
   shopData;
   editorTab = "details";
@@ -1331,8 +1331,6 @@ var ShopGmEditor = class _ShopGmEditor extends foundry.applications.api.Handleba
       if (choice === "discard") { this.isDirty = false; return super.close(options); }
       return this;
     }
-    const fallback = await Dialog.confirm({ title: "Unsaved Changes", content });
-    if (!fallback) return this;
     this.isDirty = false;
     return super.close(options);
   }

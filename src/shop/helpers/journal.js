@@ -343,7 +343,7 @@ function getPresetButtonMarkup() {
   </div>`;
 }
 function getShopData(journalEntry) {
-  const raw = journalEntry.getFlag(SHOP_MODULE_ID, SHOP_FLAG_KEY);
+  const raw = journalEntry.getFlag(SHOP_MODULE_ID, SHOP_FLAG_KEY) ?? journalEntry.flags?.[SHOP_LEGACY_MODULE_ID]?.[SHOP_FLAG_KEY];
   if (!raw || typeof raw !== "object") return null;
   return ensureShopDefaults(raw);
 }

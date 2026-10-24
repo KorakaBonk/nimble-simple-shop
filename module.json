@@ -1,17 +1,22 @@
 {
-  "id": "nimble-shop",
-  "title": "Nimble Shop",
-  "description": "Journal-backed storefronts, sellback, hidden inventory, and custom orders for Nimble in Foundry VTT v13.",
-  "version": "0.1.0",
+  "id": "nimble-simple-shop",
+  "title": "Nimble Simple Shop",
+  "description": "Journal-backed storefronts, sellback, hidden inventory, and custom orders for the Nimble system in Foundry VTT v14. A fork of KennyMakes' Nimble Shop.",
+  "version": "0.2.0",
   "authors": [
     {
-      "name": "KennyMakes"
+      "name": "KennyMakes",
+      "url": "https://github.com/KennyMakes"
+    },
+    {
+      "name": "KorakaBonk",
+      "url": "https://github.com/KorakaBonk"
     }
   ],
   "compatibility": {
-    "minimum": "13",
-    "verified": "13",
-    "maximum": "13"
+    "minimum": "14",
+    "verified": "14.365",
+    "maximum": "14"
   },
   "relationships": {
     "systems": [
@@ -19,7 +24,8 @@
         "id": "nimble",
         "type": "system",
         "compatibility": {
-          "minimum": "0.7.0"
+          "minimum": "0.10.0",
+          "verified": "0.10.0"
         }
       }
     ]
@@ -28,8 +34,12 @@
     "scripts/init.js"
   ],
   "styles": [],
-  "url": "https://github.com/KennyMakes/Nimble-Shop",
-  "manifest": "https://github.com/KennyMakes/Nimble-Shop/releases/latest/download/module.json",
-  "download": "https://github.com/KennyMakes/Nimble-Shop/releases/latest/download/nimble-shop.zip",
-  "socket": true
+  "socket": true,
+  "url": "https://github.com/KorakaBonk/nimble-simple-shop",
+  "bugs": "https://github.com/KorakaBonk/nimble-simple-shop/issues",
+  "readme": "https://github.com/KorakaBonk/nimble-simple-shop/blob/main/README.md",
+  "changelog": "https://github.com/KorakaBonk/nimble-simple-shop/blob/main/CHANGELOG.md",
+  "license": "LICENSE",
+  "manifest": "https://github.com/KorakaBonk/nimble-simple-shop/releases/latest/download/module.json",
+  "download": "https://github.com/KorakaBonk/nimble-simple-shop/releases/latest/download/module.zip"
 }

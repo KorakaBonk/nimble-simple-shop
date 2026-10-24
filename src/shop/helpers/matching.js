@@ -61,7 +61,7 @@ function createResaleEntryFromItem(item, quantity) {
   const denomination = String(price?.denomination ?? "sp").toLowerCase();
   const rawValue = Number(price?.value ?? 0);
   const normalizedValue = Number.isFinite(rawValue) ? Math.max(0, Math.floor(rawValue)) : 0;
-  const baseValueSp = denomination === "gp" ? normalizedValue * 10 : normalizedValue;
+  const baseValueSp = denomination === "gp" ? normalizedValue * 10 : denomination === "cp" ? Math.ceil(normalizedValue / 10) : normalizedValue;
   return {
     id: randomId2("stock"),
     sourceUuid: item.getFlag("core", "sourceId") ?? null,

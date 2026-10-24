@@ -1,4 +1,5 @@
-var SHOP_MODULE_ID = "nimble-shop";
+var SHOP_MODULE_ID = "nimble-simple-shop";
+var SHOP_LEGACY_MODULE_ID = "nimble-shop";
 var SHOP_FLAG_KEY = "shop";
 var SHOP_FLAG_PATH = `flags.${SHOP_MODULE_ID}.${SHOP_FLAG_KEY}`;
 var SHOP_SCHEMA_VERSION = 1;
