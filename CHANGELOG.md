@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2
+- Fix the shop's item list not scrolling in Foundry v14. The sheet's window content is now sized explicitly, so the list scrolls instead of being cut off when the window doesn't give it a fixed height.
+
 ## 1.0.1
 - Fix the shop journal sheet failing to open in Foundry v14 ("Cannot assign to read only property 'pages'"). The sheet no longer deep-merges the journal entry into its options.
 

@@ -3654,7 +3654,8 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(DocumentSheetV2)
     const emptyListMarkup = state.mode === "buy" ? `<div class="shop-empty-state"><strong>${storefrontEmptyLabel}</strong><p>${storefrontEmptyMessage}</p></div>` : `<div class="shop-empty-state"><strong>No sellable items</strong><p>The selected actor does not currently have items that can be sold here.</p></div>`;
     return `
       <style>
-        .nimble-shop-app{display:flex;flex-direction:column;gap:0.85rem;height:100%;overflow:hidden;color:var(--color-text-light-highlight, #f1e8d5);padding:0.75rem 1rem 1rem;box-sizing:border-box}
+        .nimble-shop-entry-sheet-app > .window-content{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;overflow:hidden}
+        .nimble-shop-app{display:flex;flex-direction:column;gap:0.85rem;flex:1 1 auto;min-height:0;height:100%;overflow:hidden;color:var(--color-text-light-highlight, #f1e8d5);padding:0.75rem 1rem 1rem;box-sizing:border-box}
         .nimble-shop-app h2,.nimble-shop-app h3{margin:0}
         .nimble-shop-app header{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:1rem;padding:0.1rem 0 0.35rem;border-bottom:1px solid rgba(255,255,255,.08)}
         .nimble-shop-app header .shopkeeper{font-weight:600;color:#e3cba1}
@@ -3713,7 +3714,7 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(DocumentSheetV2)
         .shop-order-status--pending{border-color:rgba(245,180,98,.4);background:rgba(245,180,98,.12);color:#ffd9a3}
         .shop-order-status--fulfilled{border-color:rgba(111,208,178,.4);background:rgba(111,208,178,.12);color:#b8f0df}
         .shop-order-row__paid .shop-currency-stack{min-width:72px}
-        @media (max-width: 900px){.nimble-shop-app header{grid-template-columns:1fr}.nimble-shop-toolbar{grid-template-columns:1fr}.nimble-shop-columns{grid-template-columns:1fr}.shop-list-panel{max-height:320px}.shop-inline-row{flex-direction:column;align-items:stretch}.shop-total-stack--single,.shop-quantity-field{min-width:0}.shop-action-grid,.shop-detail-grid{grid-template-columns:1fr}}
+        @media (max-width: 900px){.nimble-shop-app header{grid-template-columns:1fr}.nimble-shop-toolbar{grid-template-columns:1fr}.nimble-shop-columns{grid-template-columns:1fr;grid-template-rows:none;overflow:auto}.shop-list-panel{max-height:320px}.shop-inline-row{flex-direction:column;align-items:stretch}.shop-total-stack--single,.shop-quantity-field{min-width:0}.shop-action-grid,.shop-detail-grid{grid-template-columns:1fr}}
       </style>
       <div class="nimble-shop-app">
         <header>
