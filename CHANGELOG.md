@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.3
+- Fix the shop's item list still not scrolling in Foundry v14. The list and detail panels are now given a height that fits inside the window (and the screen) whenever the sheet renders or the window is resized, instead of relying on the window's own styles.
+
 ## 1.0.2
 - Fix the shop's item list not scrolling in Foundry v14. The sheet's window content is now sized explicitly, so the list scrolls instead of being cut off when the window doesn't give it a fixed height.
 

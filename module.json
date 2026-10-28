@@ -2,7 +2,7 @@
   "id": "nimble-simple-shop",
   "title": "Nimble Simple Shop",
   "description": "Journal-backed storefronts, sellback, hidden inventory, and custom orders for the Nimble system in Foundry VTT v14. A fork of KennyMakes' Nimble Shop.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "authors": [
     {
       "name": "KennyMakes",

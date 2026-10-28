@@ -520,10 +520,8 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(DocumentSheetV2)
     const mainResult = typeof result === "string" ? result : typeof result?.main === "string" ? result.main : result?.main instanceof HTMLElement ? result.main.outerHTML : "";
     root.innerHTML = mainResult;
     this.bindUi(root);
-    const listRegion = root.querySelector('[data-region="list"]');
-    if (listRegion) listRegion.scrollTop = this._listScrollTop ?? 0;
-    const detailRegion = root.querySelector('[data-region="detail"]');
-    if (detailRegion) detailRegion.scrollTop = this._detailScrollTop ?? 0;
+    this.fitScrollRegions({ restoreScroll: true });
+    requestAnimationFrame(() => this.fitScrollRegions({ restoreScroll: true }));
     if (this._searchFocus) {
       const searchInput = root.querySelector('[data-action="search"]');
       if (searchInput) {
@@ -541,6 +539,27 @@ var ShopApp = class _ShopApp extends HandlebarsApplicationMixin(DocumentSheetV2)
     }
   }
   _toggleDisabled(_disabled) {
+  }
+  _onPosition(position) {
+    super._onPosition?.(position);
+    this.fitScrollRegions();
+  }
+  fitScrollRegions({ restoreScroll = false } = {}) {
+    const root = this.element;
+    if (!root?.isConnected) return;
+    const bottom = Math.min(root.getBoundingClientRect().bottom, window.innerHeight) - 16;
+    const regions = [
+      [root.querySelector('[data-region="list"]'), this._listScrollTop],
+      [root.querySelector('[data-region="detail"]'), this._detailScrollTop]
+    ];
+    for (const [region, scrollTop] of regions) {
+      if (!region) continue;
+      region.style.maxHeight = "";
+      region.style.boxSizing = "border-box";
+      region.style.overflowY = "auto";
+      region.style.maxHeight = `${Math.max(120, Math.floor(bottom - region.getBoundingClientRect().top))}px`;
+      if (restoreScroll) region.scrollTop = scrollTop ?? 0;
+    }
   }
   bindUi(root) {
     root.onclick = async (event) => {
